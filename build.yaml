@@ -1,0 +1,16 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # Generate copyWith method
+          create_to_json: true
+          create_from_json: true
+          # Field naming
+          field_rename: none
+          # Handle nullable fields
+          nullable: true
+      hive_generator:
+        options:
+          # Generate type adapters for Hive
+          ignore_unused_elements: false

@@ -39,14 +39,23 @@ class ProductionService {
 flutter pub get
 dart run build_runner build
 
+# Code Quality & Analysis
+flutter analyze  # REQUIRED: Must pass with 0 errors before committing
+flutter test --coverage  # Run tests with coverage
+
 # Development  
 flutter run --profile  # Performance testing
-flutter test --coverage  # Run tests with coverage
 
 # Build
 flutter build apk --release
 flutter build ios --release
 ```
+
+### Code Quality Requirements
+- **Compilable Code**: The project MUST compile without errors at all times
+- **Static Analysis**: Run `flutter analyze` and fix ALL errors before committing
+- **Zero Tolerance**: No compilation errors are acceptable in any commit
+- **Continuous Validation**: Check compilation after every significant change
 
 ### Project Structure
 ```
