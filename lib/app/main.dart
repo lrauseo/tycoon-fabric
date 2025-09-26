@@ -90,55 +90,116 @@ class GameScreen extends ConsumerWidget {
 }
 
 // Placeholder overlay widgets
-class GameHUD extends StatelessWidget {
+class GameHUD extends ConsumerWidget {
   const GameHUD({super.key});
   
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final game = ref.watch(factoryGameProvider);
+    
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            // Money display
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.green.shade700,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Text(
-                '💰 1000',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+            // Top row - Money and Ads
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Money display
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade700,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    '💰 1000',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            // Ads test button
-            ElevatedButton(
-              onPressed: () async {
-                if (AdsManager.isRewardedAdReady) {
-                  await AdsManager.showProductionBoostAd(
-                    onBoostGranted: () {
+                // Ads test button
+                ElevatedButton(
+                  onPressed: () async {
+                    if (AdsManager.isRewardedAdReady) {
+                      await AdsManager.showProductionBoostAd(
+                        onBoostGranted: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('🚀 Production boost granted!'),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('🚀 Production boost granted!'),
+                          content: Text('⚠️ Ad not ready'),
                         ),
                       );
-                    },
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('⚠️ Ad not ready'),
+                    }
+                  },
+                  child: const Text('📺 Boost'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            // Tick engine debug info
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: StreamBuilder<int>(
+                stream: game.tickEngine.onTick,
+                builder: (context, snapshot) {
+                  final stats = game.tickEngine.getStats();
+                  return Text(
+                    '🕰️ Tick: ${stats['tickCount']} | '
+                    'TPS: ${stats['ticksPerSecond']} | '
+                    'Phase: ${(stats['tickPhase'] * 100).toStringAsFixed(0)}%',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontFamily: 'monospace',
                     ),
                   );
-                }
-              },
-              child: const Text('📺 Boost'),
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Pause/Resume button for testing
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (game.tickEngine.isPaused) {
+                      game.tickEngine.resume();
+                    } else {
+                      game.tickEngine.pause();
+                    }
+                  },
+                  child: StreamBuilder<int>(
+                    stream: game.tickEngine.onTick,
+                    builder: (context, snapshot) {
+                      return Text(game.tickEngine.isPaused ? '▶️ Resume' : '⏸️ Pause');
+                    },
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    game.tickEngine.reset();
+                  },
+                  child: const Text('🔄 Reset'),
+                ),
+              ],
             ),
           ],
         ),

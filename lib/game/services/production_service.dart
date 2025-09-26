@@ -32,7 +32,7 @@ class ProductionService {
   }
   
   /// Process production updates on each tick
-  void _processTick() {
+  void _processTick(int tickCount) {
     // Move items on conveyors
     _processConveyorMovement();
     
@@ -41,6 +41,11 @@ class ProductionService {
     
     // Handle item transfers between components
     _processItemTransfers();
+    
+    // Log production stats every 25 ticks (5 seconds)
+    if (tickCount % 25 == 0 && (itemsProduced > 0 || itemsSold > 0)) {
+      print('📊 Production Stats - Produced: $itemsProduced, Sold: $itemsSold, Conveyors: ${_conveyors.length}, Machines: ${_machines.length}');
+    }
   }
   
   /// Move items along conveyors

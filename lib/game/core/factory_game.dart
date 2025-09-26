@@ -8,6 +8,7 @@ import '../world/depth_sort.dart';
 import '../services/economy_service.dart';
 import '../services/production_service.dart';
 import '../services/inventory_service.dart';
+import '../services/debug_service.dart';
 
 /// Main FlameGame class for Factory Tycoon
 class FactoryGame extends FlameGame with HasCollisionDetection {
@@ -19,6 +20,7 @@ class FactoryGame extends FlameGame with HasCollisionDetection {
   late EconomyService economyService;
   late ProductionService productionService;
   late InventoryService inventoryService;
+  late DebugService debugService;
   
   @override
   Future<void> onLoad() async {
@@ -36,11 +38,13 @@ class FactoryGame extends FlameGame with HasCollisionDetection {
     economyService = EconomyService();
     productionService = ProductionService();
     inventoryService = InventoryService(); 
+    debugService = DebugService();
     
     // Initialize services with tick engine
     await economyService.init(this);
     await productionService.init(this);
     await inventoryService.init(this);
+    await debugService.init(this);
     
     // Add tick engine to components
     add(tickEngine);
@@ -73,6 +77,12 @@ class FactoryGame extends FlameGame with HasCollisionDetection {
     
     // Update depth sorting every frame
     depthSortManager.sortChildren(children);
+    
+    // Debug: Log tick engine stats every 5 seconds
+    if (tickEngine.tickCount > 0 && tickEngine.tickCount % 25 == 0 && tickEngine.didTickThisFrame) {
+      final stats = tickEngine.getStats();
+      print('🎮 Game Stats - ${stats['tickCount']} ticks, ${stats['ticksPerSecond']} TPS, Phase: ${(stats['tickPhase'] * 100).toStringAsFixed(1)}%');
+    }
   }
   
   /// Convert screen position to grid coordinates

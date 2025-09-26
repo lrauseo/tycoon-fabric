@@ -29,20 +29,25 @@ class EconomyService {
   }
   
   /// Process economic updates on each tick
-  void _processTick() {
+  void _processTick(int tickCount) {
     // Handle periodic expenses (maintenance, salaries, etc.)
-    _processPeriodicExpenses();
+    _processPeriodicExpenses(tickCount);
     
     // Reset daily counters every 100 ticks (20 seconds at 200ms ticks)
-    if (_gameRef.tickEngine.tickCount % 100 == 0) {
+    if (tickCount % 100 == 0) {
       _resetDailyCounters();
     }
   }
   
   /// Process recurring expenses each tick
-  void _processPeriodicExpenses() {
+  void _processPeriodicExpenses(int tickCount) {
     // For now, no periodic expenses
     // TODO: Add maintenance costs, salaries, electricity, etc.
+    
+    // Example: Every 10 ticks (2 seconds), deduct 1 coin for electricity
+    // if (tickCount % 10 == 0) {
+    //   spendMoney(1);
+    // }
   }
   
   /// Reset daily financial counters

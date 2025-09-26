@@ -45,15 +45,25 @@ class InventoryService {
   }
   
   /// Process inventory updates on each tick
-  void _processTick() {
+  void _processTick(int tickCount) {
     // Handle inventory decay, spoilage, or automatic selling
-    _processInventoryDecay();
+    _processInventoryDecay(tickCount);
+    
+    // Auto-save inventory every 150 ticks (30 seconds)
+    if (tickCount % 150 == 0) {
+      print('💾 Auto-saving inventory - Utilization: ${getUtilizationPercentage().toStringAsFixed(1)}%');
+    }
   }
   
   /// Process any inventory decay or automatic operations
-  void _processInventoryDecay() {
+  void _processInventoryDecay(int tickCount) {
     // For now, no decay
     // TODO: Add perishable items, automatic selling, etc.
+    
+    // Example: Every 50 ticks (10 seconds), check for full inventory and auto-sell overflow
+    // if (tickCount % 50 == 0 && currentCapacity >= maxCapacity * 0.9) {
+    //   _autoSellExcessItems();
+    // }
   }
   
   /// Add items to inventory
