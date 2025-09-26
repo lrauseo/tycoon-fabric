@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
@@ -161,6 +164,3 @@ class MachineComponent extends SpriteComponent with HasGameRef, TapCallbacks {
   // Random number generator for failure calculation
   static final _random = Random();
 }
-
-// Import Random
-import 'dart:math';

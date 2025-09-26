@@ -1,3 +1,5 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 
 /// Represents an item that flows through the production system

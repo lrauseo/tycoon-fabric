@@ -147,10 +147,16 @@ class IAPManager {
     }
     
     try {
-      final ProductDetails? productDetails = _products.firstWhere(
-        (product) => product.id == productId,
-        orElse: () => throw Exception('Product not found'),
-      );
+      ProductDetails? productDetails;
+      
+      try {
+        productDetails = _products.firstWhere(
+          (product) => product.id == productId,
+        );
+      } catch (e) {
+        print('⚠️ Product not found: $productId');
+        return false;
+      }
       
       final PurchaseParam purchaseParam = PurchaseParam(
         productDetails: productDetails,

@@ -3,6 +3,16 @@ import 'package:factory_tycoon/game/core/factory_game.dart';
 import 'package:factory_tycoon/game/core/tick_engine.dart';
 import 'package:factory_tycoon/game/services/debug_service.dart';
 
+/// Mock FactoryGame for testing purposes
+class MockFactoryGame extends FactoryGame {
+  final TickEngine _tickEngine;
+  
+  MockFactoryGame(this._tickEngine);
+  
+  @override
+  TickEngine get tickEngine => _tickEngine;
+}
+
 void main() {
   group('DebugService Integration Tests', () {
     late FactoryGame game;
@@ -10,13 +20,12 @@ void main() {
     late DebugService debugService;
     
     setUp(() async {
-      // Create mock game with tick engine
-      game = FactoryGame();
+      // Create tick engine and debug service
       tickEngine = TickEngine(tickInterval: const Duration(milliseconds: 100));
       debugService = DebugService();
       
-      // Manually assign tick engine to game (simulate game initialization)
-      game.tickEngine = tickEngine;
+      // Create a mock game implementation for testing
+      game = MockFactoryGame(tickEngine);
       
       // Initialize debug service
       await debugService.init(game);
