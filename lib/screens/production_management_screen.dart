@@ -374,7 +374,8 @@ class _ProductionManagementScreenState extends State<ProductionManagementScreen>
   void _removeEmployeeFromLine(String employeeId, String lineId) {
     Factory? factory = gameService.currentFactory;
     if (factory != null) {
-      ProductionLine? line = factory.productionLines.where((l) => l.id == lineId).firstOrNull;
+      ProductionLine? line = factory.productionLines.where((l) => l.id == lineId).isNotEmpty
+          ? factory.productionLines.where((l) => l.id == lineId).first : null;
       if (line != null) {
         line.assignedEmployees.removeWhere((e) => e.id == employeeId);
         setState(() {});

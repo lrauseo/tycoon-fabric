@@ -189,7 +189,8 @@ class GameService {
   bool addProductionLine(String productId) {
     if (_currentFactory == null) return false;
     
-    Product? product = _availableProducts.where((p) => p.id == productId).firstOrNull;
+    Product? product = _availableProducts.where((p) => p.id == productId).isNotEmpty
+        ? _availableProducts.where((p) => p.id == productId).first : null;
     if (product != null) {
       _currentFactory!.addProductionLine(product);
       return true;

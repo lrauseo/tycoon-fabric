@@ -163,8 +163,10 @@ class Factory {
   }
 
   bool assignEmployeeToLine(String employeeId, String lineId) {
-    Employee? employee = employees.where((e) => e.id == employeeId).firstOrNull;
-    ProductionLine? line = productionLines.where((l) => l.id == lineId).firstOrNull;
+    Employee? employee = employees.where((e) => e.id == employeeId).isNotEmpty 
+        ? employees.where((e) => e.id == employeeId).first : null;
+    ProductionLine? line = productionLines.where((l) => l.id == lineId).isNotEmpty
+        ? productionLines.where((l) => l.id == lineId).first : null;
     
     if (employee != null && line != null) {
       // Remove from other lines first

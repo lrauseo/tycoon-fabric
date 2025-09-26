@@ -5,7 +5,7 @@ import '../services/game_service.dart';
 import '../models/factory.dart';
 import '../models/employee.dart';
 
-class TycoonGame extends FlameGame with HasTappables {
+class TycoonGame extends FlameGame with HasTappableComponents {
   late GameService gameService;
   late TextComponent moneyText;
   late TextComponent reputationText;

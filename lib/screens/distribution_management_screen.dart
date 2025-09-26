@@ -50,8 +50,9 @@ class _DistributionManagementScreenState extends State<DistributionManagementScr
                         runSpacing: 8,
                         children: factory.inventory.entries.map((entry) {
                           String productName = gameService.availableProducts
-                              .where((p) => p.id == entry.key)
-                              .firstOrNull?.name ?? entry.key;
+                              .where((p) => p.id == entry.key).isNotEmpty
+                                  ? gameService.availableProducts.where((p) => p.id == entry.key).first.name
+                                  : entry.key;
                           return Chip(
                             label: Text('$productName: ${entry.value}'),
                             backgroundColor: entry.value > 0 ? Colors.green[100] : Colors.red[100],
@@ -147,10 +148,10 @@ class _DistributionManagementScreenState extends State<DistributionManagementScr
                                     'Produtos Preferidos:',
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  ...niche.preferredProducts.map((productId) {
                                     String productName = gameService.availableProducts
-                                        .where((p) => p.id == productId)
-                                        .firstOrNull?.name ?? productId;
+                                        .where((p) => p.id == productId).isNotEmpty
+                                            ? gameService.availableProducts.where((p) => p.id == productId).first.name
+                                            : productId;
                                     return Text('• $productName');
                                   }),
                                   SizedBox(height: 8),
@@ -288,8 +289,9 @@ class _ContractsManagementScreenState extends State<ContractsManagementScreen> {
       itemBuilder: (context, index) {
         Contract contract = gameService.availableContracts[index];
         String productName = gameService.availableProducts
-            .where((p) => p.id == contract.productId)
-            .firstOrNull?.name ?? contract.productId;
+            .where((p) => p.id == contract.productId).isNotEmpty
+                ? gameService.availableProducts.where((p) => p.id == contract.productId).first.name
+                : contract.productId;
 
         return Card(
           child: ExpansionTile(
@@ -402,8 +404,9 @@ class _ContractsManagementScreenState extends State<ContractsManagementScreen> {
       itemBuilder: (context, index) {
         Contract contract = gameService.activeContracts[index];
         String productName = gameService.availableProducts
-            .where((p) => p.id == contract.productId)
-            .firstOrNull?.name ?? contract.productId;
+            .where((p) => p.id == contract.productId).isNotEmpty
+                ? gameService.availableProducts.where((p) => p.id == contract.productId).first.name
+                : contract.productId;
 
         double progress = contract.deliveredQuantity / contract.quantity;
         bool isOverdue = contract.isOverdue;
