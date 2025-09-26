@@ -1,0 +1,64 @@
+name: factory_tycoon
+description: Flutter + Flame 2.5D isometric factory tycoon game
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: ">=3.13.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Game Engine
+  flame: ^1.12.0
+  
+  # State Management  
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+  
+  # Data Storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # Utilities
+  equatable: ^2.0.5
+  json_annotation: ^4.8.1
+  
+  # Firebase & Analytics
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.7.4
+  firebase_remote_config: ^4.3.8
+  
+  # Monetization
+  in_app_purchase: ^3.1.11
+  google_mobile_ads: ^4.0.0
+  
+  # Audio
+  audioplayers: ^5.2.1
+  
+  # UI & Animations
+  lottie: ^2.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  
+  # Code Generation
+  build_runner: ^2.4.7
+  riverpod_generator: ^2.3.9
+  json_serializable: ^6.7.1
+  hive_generator: ^2.0.1
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/sprites/
+    - assets/maps/
+    - assets/audio/
+    - assets/data/
+    - assets/lottie/
